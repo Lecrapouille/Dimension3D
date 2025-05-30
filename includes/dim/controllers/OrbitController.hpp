@@ -73,7 +73,7 @@ namespace dim
 		 * @param scene the scene
 		 * @param camera the camera
 		 */
-		void check_events(const sf::Event& sf_event, Scene& scene, Camera& camera) override;
+		void check_events(const std::optional<sf::Event>& sf_event, Scene& scene, Camera& camera) override;
 
 		/**
 		 * @brief Check the mouse and the resize events (if the controller is used in the main window).
@@ -81,7 +81,7 @@ namespace dim
 		 * @param sf_event the SFML event object
 		 * @param camera the camera
 		 */
-		void check_events(const sf::Event& sf_event, Camera& camera) override;
+		void check_events(const std::optional<sf::Event>& sf_event, Camera& camera) override;
 
 		/**
 		 * @brief Update the controller based on the mouse moves (if the controller is used in a scene).

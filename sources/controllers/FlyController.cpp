@@ -66,11 +66,13 @@ namespace dim
 		return Type::Fly;
 	}
 
-	void FlyController::check_events(const sf::Event& sf_event, Scene& scene, Camera& camera)
+	void FlyController::check_events(const std::optional<sf::Event>& sf_event, Scene& scene, Camera& camera)
 	{
 		if (move_active || look_active)
 		{
-			if (!moving && sf_event.type == sf::Event::MouseButtonReleased && scene.is_in(sf::Mouse::getPosition(Window::get_window())))
+			const auto* mouseButtonReleased = sf_event->getIf<sf::Event::MouseButtonReleased>();
+			const auto* keyReleased = sf_event->getIf<sf::Event::KeyReleased>();
+			if (!moving && mouseButtonReleased && scene.is_in(sf::Mouse::getPosition(Window::get_window())))
 			{
 				moving = true;
 				sf::Mouse::setPosition(scene.get_center().to_sf_int(), dim::Window::get_window());
@@ -78,7 +80,7 @@ namespace dim
 				ImGui::SetMouseCursor(ImGuiMouseCursor_None);
 			}
 
-			if (moving && sf_event.type == sf::Event::KeyReleased && sf_event.key.code == sf::Keyboard::Escape)
+			if (moving && keyReleased && keyReleased->code == sf::Keyboard::Key::Escape)
 			{
 				moving = false;
 				sf::Mouse::setPosition(scene.get_center().to_sf_int(), dim::Window::get_window());
@@ -87,11 +89,13 @@ namespace dim
 		}
 	}
 
-	void FlyController::check_events(const sf::Event& sf_event, Camera& camera)
+	void FlyController::check_events(const std::optional<sf::Event>& sf_event, Camera& camera)
 	{
 		if (move_active || look_active)
 		{
-			if (!moving && sf_event.type == sf::Event::MouseButtonReleased && Window::is_in(sf::Mouse::getPosition(Window::get_window())))
+			const auto* mouseButtonReleased = sf_event->getIf<sf::Event::MouseButtonReleased>();
+			const auto* keyReleased = sf_event->getIf<sf::Event::KeyReleased>();
+			if (!moving && mouseButtonReleased && Window::is_in(sf::Mouse::getPosition(Window::get_window())))
 			{
 				moving = true;
 				sf::Mouse::setPosition((Window::get_size() / 2).to_sf_int(), Window::get_window());
@@ -99,7 +103,7 @@ namespace dim
 				ImGui::SetMouseCursor(ImGuiMouseCursor_None);
 			}
 
-			if (moving && sf_event.type == sf::Event::KeyReleased && sf_event.key.code == sf::Keyboard::Escape)
+			if (moving && keyReleased && keyReleased->code == sf::Keyboard::Key::Escape)
 			{
 				moving = false;
 				sf::Mouse::setPosition((Window::get_size() / 2).to_sf_int(), Window::get_window());

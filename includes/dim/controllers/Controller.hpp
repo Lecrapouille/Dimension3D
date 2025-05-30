@@ -120,7 +120,7 @@ namespace dim
 		 * @param scene the scene
 		 * @param camera the camera
 		 */
-		virtual void check_events(const sf::Event& sf_event, Scene& scene, Camera& camera) = 0;
+		virtual void check_events(const std::optional<sf::Event>& sf_event, Scene& scene, Camera& camera) = 0;
 
 		/**
 		 * @brief Check the mouse and the resize events (if the controller is used in the main window).
@@ -128,7 +128,7 @@ namespace dim
 		 * @param sf_event the SFML event object
 		 * @param camera the camera
 		 */
-		virtual void check_events(const sf::Event& sf_event, Camera& camera) = 0;
+		virtual void check_events(const std::optional<sf::Event>& sf_event, Camera& camera) = 0;
 
 		/**
 		 * @brief Update the controller based on the mouse moves (if the controller is used in a scene).

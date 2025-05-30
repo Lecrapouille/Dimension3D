@@ -227,14 +227,14 @@ namespace dim
 		 * @param sf_event collect the SFML events
 		 * @return false when all the events are collected, true otherwise
 		 */
-		static bool poll_event(sf::Event& sf_event);
+		static std::optional<sf::Event> poll_event();
 
 		/**
 		 * @brief Check and handle mouse and resize events.
 		 *
 		 * @param sf_event the SFML event
 		 */
-		static void check_events(const sf::Event& sf_event);
+		static void check_events(const std::optional<sf::Event>& sf_event);
 
 		/**
 		 * @brief Update the window based of the user actions.

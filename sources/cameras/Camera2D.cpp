@@ -18,7 +18,7 @@ namespace dim
 		}
 	}
 
-	void Camera2D::set_rotation(float angle)
+	void Camera2D::set_rotation(sf::Angle angle)
 	{
 		view.setRotation(angle);
 	}
@@ -42,7 +42,7 @@ namespace dim
 		}
 	}
 
-	void Camera2D::rotate(float angle)
+	void Camera2D::rotate(sf::Angle angle)
 	{
 		view.rotate(angle);
 	}

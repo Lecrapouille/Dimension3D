@@ -50,7 +50,7 @@ namespace dim
 		 *
 		 * @param angle the new rotation of the view
 		 */
-		void set_rotation(float angle);
+		void set_rotation(sf::Angle angle);
 
 		/**
 		 * @brief Change the position of the view.
@@ -79,7 +79,7 @@ namespace dim
 		 *
 		 * @param angle the rotation
 		 */
-		void rotate(float angle);
+		void rotate(sf::Angle angle);
 
 		/**
 		 * @brief Move the view.

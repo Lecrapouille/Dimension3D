@@ -45,7 +45,6 @@ namespace dim
 		style.Colors[ImGuiCol_ButtonHovered] = light.to_im();
 		style.Colors[ImGuiCol_CheckMark] = Color::white.to_im();
 		style.Colors[ImGuiCol_ChildBg] = medium.to_im();
-		style.Colors[ImGuiCol_COUNT] = Color::transparent.to_im();
 		style.Colors[ImGuiCol_DockingEmptyBg] = Color::transparent.to_im();
 		style.Colors[ImGuiCol_DockingPreview] = blue.to_im();
 		style.Colors[ImGuiCol_DragDropTarget] = light.to_im();

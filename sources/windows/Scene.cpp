@@ -48,7 +48,7 @@ namespace dim
 	{
 		name = other.name + " (copy)";
 		frame_buffer.create(other.frame_buffer.get_size());
-		render_texture.create(other.render_texture.getSize().x, other.render_texture.getSize().y);
+		render_texture.resize(other.render_texture.getSize());
 
 		delete controller;
 		controller = nullptr;
@@ -84,7 +84,7 @@ namespace dim
 		if (post_processing)
 			screen.send_data(post_processing_shader, Mesh::screen, DataType::Positions | DataType::TexCoords);
 
-		clear_texture.create(other.clear_texture.getSize().x, other.clear_texture.getSize().y);
+		clear_texture.resize(other.clear_texture.getSize());
 		to_delete = other.to_delete;
 		camera2D = other.camera2D;
 
@@ -95,7 +95,7 @@ namespace dim
 	{
 		this->name = name;
 		frame_buffer.create(Window::initial_size);
-		render_texture.create(Window::initial_size.x, Window::initial_size.y);
+		render_texture.resize(sf::Vector2u(Window::initial_size.x, Window::initial_size.y));
 		controller = nullptr;
 		camera = nullptr;
 		size = Window::initial_size;
@@ -109,7 +109,7 @@ namespace dim
 		binded = false;
 		lights.clear();
 		post_processing = false;
-		clear_texture.create(Window::initial_size.x, Window::initial_size.y);
+		clear_texture.resize(sf::Vector2u(Window::initial_size.x, Window::initial_size.y));
 		to_delete = false;
 	}
 
@@ -126,8 +126,8 @@ namespace dim
 
 		if (frame_id < 5 || resized)
 		{
-			render_texture.create(size.x, size.y);
-			clear_texture.create(size.x, size.y);
+			render_texture.resize(sf::Vector2u(size.x, size.y));
+			clear_texture.resize(sf::Vector2u(size.x, size.y));
 
 			if (camera != nullptr)
 				camera->set_resolution(size);
@@ -465,9 +465,9 @@ namespace dim
 		active = ImGui::IsWindowFocused();
 
 		ImGui::SetCursorPos(ImVec2(8.f, 27.f));
-		ImGui::Image((void*)(intptr_t)frame_buffer.get_texture().get_id(), ImVec2(static_cast<float>(temp.x), static_cast<float>(temp.y)), ImVec2(0.f, 1.f), ImVec2(1.f, 0.f));
+		ImGui::Image(frame_buffer.get_texture().get_id(), ImVec2(static_cast<float>(temp.x), static_cast<float>(temp.y)), ImVec2(0.f, 1.f), ImVec2(1.f, 0.f));
 		ImGui::SetCursorPos(ImVec2(8.f, 27.f));
-		ImGui::Image((void*)(intptr_t)render_texture.getTexture().getNativeHandle(),
+		ImGui::Image(render_texture.getTexture().getNativeHandle(),
 			ImVec2(static_cast<float>(render_texture.getTexture().getSize().x),
 			static_cast<float>(render_texture.getTexture().getSize().y)), ImVec2(0.f, 1.f), ImVec2(1.f, 0.f));
 

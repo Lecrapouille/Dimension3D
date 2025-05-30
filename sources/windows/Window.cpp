@@ -26,8 +26,8 @@ namespace dim
 
 	void Window::open(const std::string& name, float screen_ratio, const std::string& icon_path)
 	{
-		unsigned int width = static_cast<unsigned int>(clamp(screen_ratio, 0.f, 1.f) * static_cast<float>(sf::VideoMode::getDesktopMode().width));
-		unsigned int height = static_cast<unsigned int>(clamp(screen_ratio, 0.f, 1.f) * static_cast<float>(sf::VideoMode::getDesktopMode().height));
+		unsigned int width = static_cast<unsigned int>(clamp(screen_ratio, 0.f, 1.f) * static_cast<float>(sf::VideoMode::getDesktopMode().size.x));
+		unsigned int height = static_cast<unsigned int>(clamp(screen_ratio, 0.f, 1.f) * static_cast<float>(sf::VideoMode::getDesktopMode().size.y));
 
 		open(name, width, height, icon_path);
 	}
@@ -42,21 +42,21 @@ namespace dim
 		sf::ContextSettings settings;
 		settings.depthBits = 24;
 		settings.stencilBits = 8;
-		settings.antialiasingLevel = 8;
+		settings.antiAliasingLevel = 8;
 		settings.majorVersion = 4;
 		settings.minorVersion = 3;
 
-		window = new sf::RenderWindow(sf::VideoMode(width, height), name, sf::Style::Default, settings);
+		window = new sf::RenderWindow(sf::VideoMode(sf::Vector2u(width, height)), name, sf::State::Windowed, settings);
 
 		if (icon_path != "")
 		{
 			sf::Image icon;
 
 			if (icon.loadFromFile(icon_path))
-				window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+				window->setIcon(icon);
 		}
 
-		init();
+		//init();
 		frame_buffer.create(width, height);
 		running = true;
 	}
@@ -276,17 +276,17 @@ namespace dim
 		}
 	}
 
-	bool Window::poll_event(sf::Event& sf_event)
+	std::optional<sf::Event> Window::poll_event()
 	{
-		return window->pollEvent(sf_event);
+		return window->pollEvent();
 	}
 
-	void Window::check_events(const sf::Event& sf_event)
+	void Window::check_events(const std::optional<sf::Event>& sf_event)
 	{
 		static int frame_id = 0;
-		ImGui::SFML::ProcessEvent(sf_event);
+		ImGui::SFML::ProcessEvent(*window, sf_event);
 
-		if (sf_event.type == sf::Event::Resized || frame_id < 5)
+		if (sf_event->is<sf::Event::Resized>() || frame_id < 5)
 		{
 			if (window->getSize().x < static_cast<unsigned int>(initial_size.x))
 				window->setSize(sf::Vector2u(initial_size.x, window->getSize().y));
@@ -310,7 +310,7 @@ namespace dim
 		if (controller != nullptr && camera != nullptr)
 			controller->check_events(sf_event, *camera);
 
-		if (sf_event.type == sf::Event::Closed)
+		if (sf_event->is<sf::Event::Closed>())
 			running = false;
 
 		frame_id++;
@@ -449,7 +449,7 @@ namespace dim
 		camera = nullptr;
 		clear_lights();
 
-		shut_down();
+		//shut_down();
 		running = false;
 	}
 

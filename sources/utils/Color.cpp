@@ -108,10 +108,10 @@ namespace dim
 		*this = *this / number;
 		return *this;
 	}
-
+	
 	sf::Color Color::to_sf() const
 	{
-		return sf::Color(static_cast<sf::Uint8>(r * 255.f), static_cast<sf::Uint8>(g * 255.f), static_cast<sf::Uint8>(b * 255.f), static_cast<sf::Uint8>(a * 255.f));
+		return sf::Color(static_cast<uint8_t>(r * 255.f), static_cast<uint8_t>(g * 255.f), static_cast<uint8_t>(b * 255.f), static_cast<uint8_t>(a * 255.f));
 	}
 
 	ImVec4 Color::to_im() const

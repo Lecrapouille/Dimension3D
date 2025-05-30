@@ -26,7 +26,7 @@ namespace dim
 		return Type::Orbit;
 	}
 
-	void OrbitController::check_events(const sf::Event& sf_event, Scene& scene, Camera& camera)
+	void OrbitController::check_events(const std::optional<sf::Event>& sf_event, Scene& scene, Camera& camera)
 	{
 		if (center_changed)
 		{
@@ -35,20 +35,21 @@ namespace dim
 			center_changed = false;
 		}
 
-		if (move_active && sf_event.type == sf::Event::MouseWheelMoved && scene.is_in(sf::Mouse::getPosition(Window::get_window())))
+		const auto* mouseWheelScrolled = sf_event->getIf<sf::Event::MouseWheelScrolled>();
+		if (move_active && mouseWheelScrolled && scene.is_in(sf::Mouse::getPosition(Window::get_window())))
 		{
 			camera.position -= center;
-			camera.position.set_norm(std::max(camera.position.get_norm() - static_cast<float>(sf_event.mouseWheel.delta) * speed, 0.01f));
+			camera.position.set_norm(std::max(camera.position.get_norm() - static_cast<float>(mouseWheelScrolled->delta) * speed, 0.01f));
 			camera.position += center;
 
 			if (camera.get_type() == Camera::Type::Orthographic)
-				static_cast<OrthographicCamera&>(camera).zoom(1.f + static_cast<float>(sf_event.mouseWheel.delta) * speed * 0.5f);
+				static_cast<OrthographicCamera&>(camera).zoom(1.f + static_cast<float>(mouseWheelScrolled->delta) * speed * 0.5f);
 
 			camera.view = glm::lookAt(camera.position.to_glm(), (camera.position + normalize(center - camera.position)).to_glm(), glm::vec3(0.f, 1.f, 0.f));
 		}
 	}
 
-	void OrbitController::check_events(const sf::Event& sf_event, Camera& camera)
+	void OrbitController::check_events(const std::optional<sf::Event>& sf_event, Camera& camera)
 	{
 		if (center_changed)
 		{
@@ -57,14 +58,15 @@ namespace dim
 			center_changed = false;
 		}
 
-		if (move_active && sf_event.type == sf::Event::MouseWheelMoved && Window::is_in(sf::Mouse::getPosition(Window::get_window())))
+		const auto* mouseWheelScrolled = sf_event->getIf<sf::Event::MouseWheelScrolled>();
+		if (move_active && mouseWheelScrolled && Window::is_in(sf::Mouse::getPosition(Window::get_window())))
 		{
 			camera.position -= center;
-			camera.position.set_norm(std::max(camera.position.get_norm() - static_cast<float>(sf_event.mouseWheel.delta) * speed, 0.01f));
+			camera.position.set_norm(std::max(camera.position.get_norm() - static_cast<float>(mouseWheelScrolled->delta) * speed, 0.01f));
 			camera.position += center;
 
 			if (camera.get_type() == Camera::Type::Orthographic)
-				static_cast<OrthographicCamera&>(camera).zoom(1.f + static_cast<float>(sf_event.mouseWheel.delta) * speed * 0.5f);
+				static_cast<OrthographicCamera&>(camera).zoom(1.f + static_cast<float>(mouseWheelScrolled->delta) * speed * 0.5f);
 
 			camera.view = glm::lookAt(camera.position.to_glm(), (camera.position + normalize(center - camera.position)).to_glm(), glm::vec3(0.f, 1.f, 0.f));
 		}
